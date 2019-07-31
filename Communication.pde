@@ -97,9 +97,37 @@ public class Communication{
     }
   }
   
-  private void sendGrainParameters(Skeleton skeleton){
+  private void sendGrainParameters(Skeleton skeleton,Sphere sphere){
+    PVector relativePos = skeleton.scene.floor.toFloorCoordinateSystem(skeleton.joints[SPINE_BASE].estimatedPosition);
+    float realXPosition = relativePos.x;
+    float realZPosition = relativePos.z;
+    if(skeleton.scene.floor.isCalibrated){
+      realXPosition = constrain(map((relativePos.x),-((skeleton.scene.floor.dimensions.x)/2),((skeleton.scene.floor.dimensions.x)/2),1,0),0,1);
+      realZPosition = constrain(map((relativePos.z),-((skeleton.scene.floor.dimensions.z)/2),((skeleton.scene.floor.dimensions.z)/2),1,0),0,1);
+    }
     OscMessage messageToPd = new OscMessage("/Ready");
-    messageToPd = new OscMessage("/mid_z");
+    messageToPd = new OscMessage("/indexVideo");
+    messageToPd.add(sphere.currentVideo);
+    //println("\nindexVideo: "+sphere.currentVideo);
+    this.oscP5.send(messageToPd, pdAddress);
+    
+    messageToPd = new OscMessage("/zPos");
+    
+    messageToPd.add(realZPosition);
+    //println("\nzPos: "+realZPosition);
+    this.oscP5.send(messageToPd, pdAddress);
+        
+    
+    messageToPd = new OscMessage("/xPos");
+    
+    messageToPd.add(realXPosition);
+    //println("\nXpos: "+realXPosition);
+    this.oscP5.send(messageToPd, pdAddress);
+    
+    
+    println("\n\n\n");
+    
+    /*messageToPd = new OscMessage("/mid_z");
     messageToPd.add(map((skeleton.joints[SPINE_BASE].estimatedPosition.z),0.4,3.5,0,1));
     this.oscP5.send(messageToPd, pdAddress);
     messageToPd = new OscMessage("/hand_left_x");
@@ -113,7 +141,7 @@ public class Communication{
     this.oscP5.send(messageToPd, pdAddress);
     messageToPd = new OscMessage("/hand_right_y");
     messageToPd.add(map((skeleton.joints[HAND_RIGHT].estimatedPosition.y),-1.5,1,0,1));
-    this.oscP5.send(messageToPd, pdAddress);
+    this.oscP5.send(messageToPd, pdAddress);*/
   }
   
   private void sendVideoParameter(Skeleton skeleton){

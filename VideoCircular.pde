@@ -1,18 +1,21 @@
 /*
   ToDo: JavaDoc
 */
+import processing.video.*;
 boolean drawSkeletonTool = true;
 String userTextInput = "";
 boolean gettingUserTextInput = false;
 Scene scene = new Scene();
+Sphere sphere;
 
 int pdPort = 12000;
 int myPort = 3001;
 Communication communication = new Communication("192.168.15.16", pdPort, myPort);
 
 void setup() {
-  frameRate(scene.frameRate_);
   size(500, 500, P3D);
+  sphere = new Sphere(this, 0.8);
+  frameRate(scene.frameRate_);
   scene.init();
 }
 
@@ -23,7 +26,33 @@ void draw() {
     scene.draw(); // measuredSkeletons, jointOrientation, boneRelativeOrientation, handRadius, handStates
   } else{
     // Your animation algorithm should be placed here
-    background(color(0));
+    sphere.display(); //video sphere
+  }
+  for(Skeleton skeleton:scene.activeSkeletons.values()){ //example of consulting feature
+    //sphere.cameraRotX = sphere.cameraRotX + skeleton.features.steeringWheel.pitchStep;
+    //PVector relative = skeleton.scene.floor.toFloorCoordinateSystem(skeleton.centerOfMass);
+    //PVector relativeHead = skeleton.scene.floor.toFloorCoordinateSystem(skeleton.joints[HEAD].estimatedPosition);
+    //println("\nMedia Altura: "+relative.y);
+    //println("\nAltura Cabeça: "+relativeHead.y);
+    sphere.cameraRotX = sphere.cameraRotX + (map(skeleton.steeringWheel.position.y, 1, 1.5, PI/64, -PI/64))*sphere.transZSensibility;
+    //println("\nTranslação Volante: "+10*map(skeleton.steeringWheel.position.y, 1, 1.5, PI/64, -PI/64)*sphere.transZSensibility);
+    //println("\nCaremeraX: "+sphere.cameraRotX);
+    sphere.cameraRotY = sphere.cameraRotY + (skeleton.steeringWheel.yawStep)*sphere.transZSensibility;
+    //println("\nRotação Volante: "+ 10*(skeleton.steeringWheel.yawStep)*sphere.transZSensibility);
+    //println("\nCaremeraY: "+sphere.cameraRotY);
+    sphere.cameraTransZ = map(skeleton.steeringWheel.positionPercentageOfRoom.z, -1, 1, 200, -200);
+    if (sphere.cameraTransZ > 200){
+      sphere.transZSensibility = 0;
+    }
+    else if(sphere.cameraTransZ < 0) {
+      sphere.transZSensibility = 1 ; 
+    }
+    else {
+      sphere.transZSensibility = map(skeleton.steeringWheel.positionPercentageOfRoom.z,-1,1,0,1);
+    }
+    
+    communication.sendGrainParameters(skeleton,sphere);
+    
   }
   communication.sendScene(scene);
 }

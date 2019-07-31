@@ -114,6 +114,7 @@ public class Skeleton{
     for (int j=0; j<25; j++){
       joints[j].receiveNewMeasurements(kJoints[j]);
     }
+    this.steeringWheel.update();
     this.smoothSkeleton();
     this.calculateBodySize();
     this.calculateCenterOfMass();
