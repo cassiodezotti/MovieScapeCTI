@@ -33,7 +33,7 @@ public class Scene{
   public boolean drawRondDuBras = false;
   public boolean drawMomentum = true;
   public boolean drawCenterOfMass = false;
-  public boolean loadFloorCalibration = false;
+  public boolean loadFloorCalibration = true;
   
   public Scene(){
     this.currentDeltaT = 1/this.frameRate_; 

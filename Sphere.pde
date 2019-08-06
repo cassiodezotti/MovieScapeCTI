@@ -36,7 +36,7 @@ class Sphere {
   }
   
   public void display() {
-    background(0);
+    background(255);
     this.setCamera();
     this.isPlaying = false;
     for(Clip clip:this.clips){
