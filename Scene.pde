@@ -31,7 +31,7 @@ public class Scene{
   public boolean drawHandStates = false;
   public boolean drawPollock = false;
   public boolean drawRondDuBras = false;
-  public boolean drawMomentum = true;
+  public boolean drawMomentum = false;
   public boolean drawCenterOfMass = false;
   public boolean loadFloorCalibration = true;
   
@@ -99,7 +99,7 @@ public class Scene{
  * If a skeleton is abscent for 5 seconds, it is deleted.
  */
   private void cleanDeadSkeletons(){
-    int timeTolerance = 5; // seconds
+    int timeTolerance = 3; // seconds
     int s = 0;
     int[] skeletonsToRemove = new int[6];
     for(Skeleton skeleton:activeSkeletons.values()){

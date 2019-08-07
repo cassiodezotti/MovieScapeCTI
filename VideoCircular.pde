@@ -40,15 +40,15 @@ void draw() {
     sphere.cameraRotY = sphere.cameraRotY + (skeleton.steeringWheel.yawStep)*sphere.transZSensibility;
     //println("\nRotação Volante: "+ 10*(skeleton.steeringWheel.yawStep)*sphere.transZSensibility);
     //println("\nCaremeraY: "+sphere.cameraRotY);
-    sphere.cameraTransZ = map(skeleton.steeringWheel.positionPercentageOfRoom.z, -1, 1, 200, -200);
-    if (sphere.cameraTransZ > 200){
+    sphere.cameraTransZ = map(skeleton.steeringWheel.positionPercentageOfRoom.z, -1, 1, 250, -250);
+    if (sphere.cameraTransZ > 260){
       sphere.transZSensibility = 0;
     }
     else if(sphere.cameraTransZ < 0) {
       sphere.transZSensibility = 1 ; 
     }
     else {
-      sphere.transZSensibility = map(skeleton.steeringWheel.positionPercentageOfRoom.z,-1,1,0,1);
+      sphere.transZSensibility = map(skeleton.steeringWheel.positionPercentageOfRoom.z,-1.5,1,0,1);
     }
     
     communication.sendGrainParameters(skeleton,sphere);

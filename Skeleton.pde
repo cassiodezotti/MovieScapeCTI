@@ -56,11 +56,11 @@ public class Skeleton{
   public PVector centerOfMass;
   public float centerOfMassHeightAdjusted; // Center of Mass height adjusted for body size. 
   public float dispersion; // variance of position of joints, adjusted by body size. (sum of distances to the center of gravity). Ranges from ~1.5 to ~3.
-  public Pollock leftHandPollock;
-  public Pollock rightHandPollock;
-  public RondDuBras leftHandRondDuBras;
-  public RondDuBras rightHandRondDuBras;
-  public Momentum momentum = new Momentum(this);
+  //public Pollock leftHandPollock;
+  //public Pollock rightHandPollock;
+  //public RondDuBras leftHandRondDuBras;
+  //public RondDuBras rightHandRondDuBras;
+  //public Momentum momentum = new Momentum(this);
                       
   public Skeleton(KSkeleton kSkeleton, Scene scene){
     this.scene = scene;
@@ -85,10 +85,10 @@ public class Skeleton{
     for(int b=0; b<24; b++){
       this.joints[skeletonConnections[b][1]].addChildBone(this.bones[skeletonConnections[b][0]]);
     }
-    this.leftHandPollock = new Pollock(this, "LEFT");
-    this.rightHandPollock = new Pollock(this, "RIGHT");
-    this.leftHandRondDuBras = new RondDuBras(this, "LEFT");
-    this.rightHandRondDuBras = new RondDuBras(this, "RIGHT");
+    //this.leftHandPollock = new Pollock(this, "LEFT");
+    //this.rightHandPollock = new Pollock(this, "RIGHT");
+    //this.leftHandRondDuBras = new RondDuBras(this, "LEFT");
+    //this.rightHandRondDuBras = new RondDuBras(this, "RIGHT");
     if(this.scene.saveSession) {
       this.savingOutput = createWriter("savedSessions/"+this.scene.sessionName+"/skeleton"+this.scene.numberOfSkeletons+".txt");
       this.savingOutput.print("frameCount bodySize centerOfMassHeightAdjusted dispersion leftPollock rightPollock leftRondDuBras rightRondDuBras momentumFluid momentumHarsh momentumTotal handRadiusLeft handRadiusRight ");
@@ -119,11 +119,11 @@ public class Skeleton{
     this.calculateBodySize();
     this.calculateCenterOfMass();
     this.calculateDispersion();
-    this.leftHandPollock.update();
-    this.rightHandPollock.update();
-    this.leftHandRondDuBras.update();
-    this.rightHandRondDuBras.update();
-    this.momentum.update();
+    //this.leftHandPollock.update();
+    //this.rightHandPollock.update();
+    //this.leftHandRondDuBras.update();
+    //this.rightHandRondDuBras.update();
+    //this.momentum.update();
     this.appearedLastInFrame = frameCount;
     if(this.scene.saveSession) this.save();
   }
@@ -133,13 +133,13 @@ public class Skeleton{
     this.savingOutput.print(this.bodySize+" ");
     this.savingOutput.print(this.centerOfMassHeightAdjusted+" ");
     this.savingOutput.print(this.dispersion+" ");
-    this.savingOutput.print(this.leftHandPollock.activationDirectionCode+" ");
-    this.savingOutput.print(this.rightHandPollock.activationDirectionCode+" ");
-    this.savingOutput.print(this.leftHandRondDuBras.activatedDirectionCode+" ");
-    this.savingOutput.print(this.rightHandRondDuBras.activatedDirectionCode+" ");
-    this.savingOutput.print(this.momentum.averageFluid+" ");
-    this.savingOutput.print(this.momentum.averageHarsh+" ");
-    this.savingOutput.print(this.momentum.averageTotal+" ");
+    //this.savingOutput.print(this.leftHandPollock.activationDirectionCode+" ");
+    //this.savingOutput.print(this.rightHandPollock.activationDirectionCode+" ");
+    //this.savingOutput.print(this.leftHandRondDuBras.activatedDirectionCode+" ");
+    //this.savingOutput.print(this.rightHandRondDuBras.activatedDirectionCode+" ");
+    //this.savingOutput.print(this.momentum.averageFluid+" ");
+    //this.savingOutput.print(this.momentum.averageHarsh+" ");
+    //this.savingOutput.print(this.momentum.averageTotal+" ");
     this.savingOutput.print(this.estimatedHandRadius[0]+" ");
     this.savingOutput.print(this.estimatedHandRadius[1]+" ");
     for(int j=0; j<25; j++){
@@ -269,14 +269,14 @@ public class Skeleton{
     if(drawHandRadius)           this.drawHandRadius();
     if(drawHandStates)           this.drawHandStates();
     if(drawPollock){
-      this.leftHandPollock.draw(true, true, true);
-      this.rightHandPollock.draw(true, true, true);
+      //this.leftHandPollock.draw(true, true, true);
+      //this.rightHandPollock.draw(true, true, true);
     }
     if(drawRondDuBras){
-      this.leftHandRondDuBras.draw(true, true);
-      this.rightHandRondDuBras.draw(true, true);
+      //this.leftHandRondDuBras.draw(true, true);
+      //this.rightHandRondDuBras.draw(true, true);
     }
-    if(drawMomentum) this.momentum.draw();
+    //if(drawMomentum) this.momentum.draw();
     if(drawCenterOfMass) this.drawCenterOfMass(20);
     //this.drawSteeringWheel();
   }

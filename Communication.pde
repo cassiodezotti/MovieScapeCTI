@@ -13,8 +13,7 @@ public class Communication{
   public void sendScene(Scene scene){
     if(!scene.activeSkeletons.isEmpty()){
       for(Skeleton skeleton:scene.activeSkeletons.values()){
-        this.sendMessageToElenaProject(skeleton);
-        /*
+        /*this.sendMessageToElenaProject(skeleton);
         this.sendKinectSkeleton(skeleton);
         this.sendGrainParameters(skeleton);
         this.sendVideoParameter(skeleton);
@@ -24,7 +23,7 @@ public class Communication{
     }
   }
   
-  private void sendMessageToElenaProject(Skeleton skeleton){
+  /*private void sendMessageToElenaProject(Skeleton skeleton){
     OscMessage messageToElenaProject;
     
     messageToElenaProject = new OscMessage("/centerOfMassHeightAdjusted:");
@@ -62,7 +61,7 @@ public class Communication{
     messageToElenaProject = new OscMessage("/momentum.averageTotal:");
     messageToElenaProject.add(skeleton.momentum.averageTotal);
     this.oscP5.send(messageToElenaProject, pdAddress);
-  }
+  }*/
   
   private void sendSteeringWheel(Skeleton skeleton){
     OscMessage messageToVideoSphere = new OscMessage("/steeringWheelRollStep:");
