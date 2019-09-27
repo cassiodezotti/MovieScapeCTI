@@ -1,5 +1,5 @@
 class Sphere {
-  private int radius = 200;
+  private int radius = height;
   private int[] nClipsInLayer = {1, 7, 12, 14, 12, 7, 1};
   //private int[] nClipsInLayer = {0, 3, 7, 9, 11, 13, 11, 9, 7, 3, 0};
   private float[] startingFi = new float[nClipsInLayer.length];
@@ -7,10 +7,11 @@ class Sphere {
   private Clip[] clips;
   public float cameraRotX = 0;
   public float cameraRotY = 0;
-  public float cameraTransZ = 0;
+  public float cameraTransZ = -600;
   public float transZSensibility = 1;
   public int currentVideo = 0;
   public boolean isPlaying = false;
+  public int nClip;
     
   Sphere (PApplet pApplet, float clipDensity) {// clipDensity:Percentage of sphere area covered with clips.
     int totalNumberOfClips = 0;
@@ -28,7 +29,7 @@ class Sphere {
     for (int layer = 0; layer < nClipsInLayer.length; layer++) {
       float fi = startingFi[layer]; // fi: "horizontal".
       for (float c = 0; c < nClipsInLayer[layer]; c++) {
-        this.clips[clip] = new Clip(pApplet, this, movieSize, fi, this.theta[layer]);
+        this.clips[clip] = new Clip(pApplet, this, movieSize, fi, this.theta[layer], nClip);
         clip++;
         fi += TWO_PI/nClipsInLayer[layer];
       }

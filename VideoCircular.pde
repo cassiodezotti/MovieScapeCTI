@@ -8,10 +8,6 @@ boolean gettingUserTextInput = false;
 Scene scene = new Scene();
 Sphere sphere;
 
-int pdPort = 12000;
-int myPort = 3001;
-Communication communication = new Communication("192.168.15.16", pdPort, myPort);
-
 void setup() {
   size(500, 500, P3D);
   sphere = new Sphere(this, 0.8);
@@ -40,21 +36,19 @@ void draw() {
     sphere.cameraRotY = sphere.cameraRotY + (skeleton.steeringWheel.yawStep)*sphere.transZSensibility;
     //println("\nRotação Volante: "+ 10*(skeleton.steeringWheel.yawStep)*sphere.transZSensibility);
     //println("\nCaremeraY: "+sphere.cameraRotY);
-    sphere.cameraTransZ = map(skeleton.steeringWheel.positionPercentageOfRoom.z, -1, 1, 250, -250);
-    if (sphere.cameraTransZ > 260){
+    sphere.cameraTransZ = map(skeleton.steeringWheel.positionPercentageOfRoom.z, -1, 1, -sphere.radius/2, -2*sphere.radius);
+    if (sphere.cameraTransZ > -(sphere.radius-0.2*sphere.radius)){
       sphere.transZSensibility = 0;
     }
-    else if(sphere.cameraTransZ < 0) {
+    else if(sphere.cameraTransZ < -(sphere.radius+sphere.radius*0.4)) {
       sphere.transZSensibility = 1 ; 
     }
     else {
-      sphere.transZSensibility = map(skeleton.steeringWheel.positionPercentageOfRoom.z,-1.5,1,0,1);
+      sphere.transZSensibility = map(skeleton.steeringWheel.positionPercentageOfRoom.z,-1,1,0,1);
     }
     
-    communication.sendGrainParameters(skeleton,sphere);
     
   }
-  communication.sendScene(scene);
 }
 
 void keyPressed(){
@@ -95,14 +89,33 @@ void mouseDragged() {
   if(mouseButton == LEFT){
     scene.cameraTransX = scene.cameraTransX + (mouseX - pmouseX);
     scene.cameraTransY = scene.cameraTransY + (mouseY - pmouseY);
+    if (!scene.drawScene){
+      sphere.cameraRotX = sphere.transZSensibility*(sphere.cameraRotX - (mouseY - pmouseY)*PI/height)%TWO_PI;
+      sphere.cameraRotY = sphere.transZSensibility*(sphere.cameraRotY + (mouseX - pmouseX)*PI/width)%TWO_PI;
+    }
   }
 }
 
 void mouseWheel(MouseEvent event) {
   float zoom = event.getCount();
+  println("zoom espera",sphere.cameraTransZ);
+  println("Zomm real",scene.cameraTransZ);
+  println("sensibilidade",sphere.transZSensibility);
   if(zoom < 0){
     scene.cameraTransZ = scene.cameraTransZ + 30;
+    sphere.cameraTransZ = sphere.cameraTransZ + 10;
   }else{
     scene.cameraTransZ = scene.cameraTransZ - 30;
+    sphere.cameraTransZ = sphere.cameraTransZ - 10;
   }
+  
+  if (sphere.cameraTransZ > -(sphere.radius-0.2*sphere.radius)){
+      sphere.transZSensibility = 0;
+    }
+    else if(sphere.cameraTransZ < -(sphere.radius+sphere.radius*0.4)) {
+      sphere.transZSensibility = 1 ; 
+    }
+    else {
+      sphere.transZSensibility = map(sphere.cameraTransZ,-sphere.radius*(3/2),-sphere.radius/2,1,0);
+    }
 }
