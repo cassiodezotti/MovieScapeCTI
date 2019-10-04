@@ -24,19 +24,12 @@ void draw() {
     // Your animation algorithm should be placed here
     sphere.display(); //video sphere
   }
-  for(Skeleton skeleton:scene.activeSkeletons.values()){ //example of consulting feature
-    //sphere.cameraRotX = sphere.cameraRotX + skeleton.features.steeringWheel.pitchStep;
-    //PVector relative = skeleton.scene.floor.toFloorCoordinateSystem(skeleton.centerOfMass);
-    //PVector relativeHead = skeleton.scene.floor.toFloorCoordinateSystem(skeleton.joints[HEAD].estimatedPosition);
-    //println("\nMedia Altura: "+relative.y);
-    //println("\nAltura Cabeça: "+relativeHead.y);
+  for(Skeleton skeleton:scene.activeSkeletons.values()){ 
     sphere.cameraRotX = sphere.cameraRotX + (map(skeleton.steeringWheel.position.y, 1, 1.5, PI/64, -PI/64))*sphere.transZSensibility;
-    //println("\nTranslação Volante: "+10*map(skeleton.steeringWheel.position.y, 1, 1.5, PI/64, -PI/64)*sphere.transZSensibility);
-    //println("\nCaremeraX: "+sphere.cameraRotX);
     sphere.cameraRotY = sphere.cameraRotY + (skeleton.steeringWheel.yawStep)*sphere.transZSensibility;
-    //println("\nRotação Volante: "+ 10*(skeleton.steeringWheel.yawStep)*sphere.transZSensibility);
-    //println("\nCaremeraY: "+sphere.cameraRotY);
-    sphere.cameraTransZ = map(skeleton.steeringWheel.positionPercentageOfRoom.z, -1, 1, -sphere.radius/2, -2*sphere.radius);
+    sphere.cameraTransZ = map(skeleton.steeringWheel.positionPercentageOfRoom.z, -1, 1, -sphere.radius/2, -2*sphere.radius);//ver porcentagem da sala, diminuir proximidade
+    //cameraTransZ é negativo entao quanto aproxima tem q ficar menos negativo
+    
     if (sphere.cameraTransZ > -(sphere.radius-0.2*sphere.radius)){
       sphere.transZSensibility = 0;
     }
@@ -44,6 +37,7 @@ void draw() {
       sphere.transZSensibility = 1 ; 
     }
     else {
+      //sphere.transZSensibility = map(sphere.cameraTransZ,-1*(sphere.radius/2),-sphere.radius*1.5,0,1);//ver qual é melhor
       sphere.transZSensibility = map(skeleton.steeringWheel.positionPercentageOfRoom.z,-1,1,0,1);
     }
     
@@ -90,8 +84,8 @@ void mouseDragged() {
     scene.cameraTransX = scene.cameraTransX + (mouseX - pmouseX);
     scene.cameraTransY = scene.cameraTransY + (mouseY - pmouseY);
     if (!scene.drawScene){
-      sphere.cameraRotX = sphere.transZSensibility*(sphere.cameraRotX - (mouseY - pmouseY)*PI/height)%TWO_PI;
-      sphere.cameraRotY = sphere.transZSensibility*(sphere.cameraRotY + (mouseX - pmouseX)*PI/width)%TWO_PI;
+      sphere.cameraRotX = ((sphere.cameraRotX - (mouseY - pmouseY)*PI/height)%TWO_PI);
+      sphere.cameraRotY = ((sphere.cameraRotY + (mouseX - pmouseX)*PI/width)%TWO_PI);
     }
   }
 }
@@ -109,13 +103,13 @@ void mouseWheel(MouseEvent event) {
     sphere.cameraTransZ = sphere.cameraTransZ - 10;
   }
   
-  if (sphere.cameraTransZ > -(sphere.radius-0.2*sphere.radius)){
+  if (sphere.cameraTransZ > -(sphere.radius/2)){
       sphere.transZSensibility = 0;
     }
     else if(sphere.cameraTransZ < -(sphere.radius+sphere.radius*0.4)) {
       sphere.transZSensibility = 1 ; 
     }
     else {
-      sphere.transZSensibility = map(sphere.cameraTransZ,-sphere.radius*(3/2),-sphere.radius/2,1,0);
+      sphere.transZSensibility = map(sphere.cameraTransZ,-1*(sphere.radius/2),-sphere.radius*1.5,0,1);
     }
 }
