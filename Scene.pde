@@ -33,7 +33,7 @@ public class Scene{
   public boolean drawRondDuBras = false;
   public boolean drawMomentum = false;
   public boolean drawCenterOfMass = false;
-  public boolean loadFloorCalibration = false;
+  public boolean loadFloorCalibration = true;
   public boolean hasSkeleton = false;
   
   public Scene(){
@@ -84,7 +84,7 @@ public class Scene{
       this.currentDeltaT = 1/frameRate;
       ArrayList<KSkeleton> kSkeletonArray = kinect.getSkeleton3d();
       for (int bodyNumber = 0; bodyNumber < kSkeletonArray.size(); bodyNumber++){
-        if(!hasSkeleton)break;
+        if(hasSkeleton)break;
         KSkeleton kSkeleton = kSkeletonArray.get(bodyNumber);
         if (!activeSkeletons.containsKey(kSkeleton.getIndexColor())){ // New skeleton received
           this.numberOfSkeletons++;

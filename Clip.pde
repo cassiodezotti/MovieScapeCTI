@@ -25,7 +25,7 @@ class Clip {
     this.centerPosition = PVector.mult(this.centerDirection, this.sphere.radius);
     
     this.randomMovie = (int) random(nOfDifferentClips-0.001);
-    println(this.randomMovie);
+    //println(this.randomMovie);
     
     //this.movie = new Movie(pApplet, "silent_movie"+randomMovie+".mp4");   
     //this.movie = new Movie(pApplet, "aurora"+randomMovie+".mov");
@@ -52,7 +52,7 @@ class Clip {
     PVector screenDirection = new PVector(cos(this.sphere.cameraRotY+HALF_PI)*sin(HALF_PI-this.sphere.cameraRotX), cos(HALF_PI-this.sphere.cameraRotX), sin(this.sphere.cameraRotY+HALF_PI)*sin(HALF_PI-this.sphere.cameraRotX)); // Não me pergunte, foi tentativa e erro kkk.
     float apontandoParaTelaOuNao = PVector.dot(this.centerDirection, screenDirection);
     
-    if(apontandoParaTelaOuNao > cos(radians(10)) && this.sphere.cameraTransZ > -(sphere.radius+0.1*sphere.radius)){ 
+    if(apontandoParaTelaOuNao > cos(radians(10)) && this.sphere.cameraTransZ > -(sphere.radius-0.15*sphere.radius)){ 
       if (movie.available()) {
         this.movie.read();
       }

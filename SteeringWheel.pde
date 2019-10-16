@@ -55,6 +55,6 @@ class SteeringWheel{
     }
     this.rollStep = this.rollAngle*this.rollSize/10;
     this.pitchStep = this.pitchAngle*this.pitchSize/10;
-    this.yawStep = this.yawAngle*this.yawSize/10;
+    this.yawStep = this.yawAngle*this.yawSize/8;
   }
 }

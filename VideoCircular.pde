@@ -25,12 +25,15 @@ void draw() {
     sphere.display(); //video sphere
   }
   for(Skeleton skeleton:scene.activeSkeletons.values()){ 
-    sphere.cameraRotX = sphere.cameraRotX + (map(skeleton.steeringWheel.position.y, 1, 1.5, PI/64, -PI/64))*sphere.transZSensibility;
-    sphere.cameraRotY = sphere.cameraRotY + (skeleton.steeringWheel.yawStep)*sphere.transZSensibility;
-    sphere.cameraTransZ = map(skeleton.steeringWheel.positionPercentageOfRoom.z, -1, 1, -sphere.radius/2, -2*sphere.radius);//ver porcentagem da sala, diminuir proximidade
+    sphere.cameraRotX = sphere.cameraRotX + (map(skeleton.steeringWheel.position.y, 1, 1.5, PI/64, -PI/64))*pow(sphere.transZSensibility,2);
+    sphere.cameraRotY = sphere.cameraRotY + (skeleton.steeringWheel.yawStep)*pow(sphere.transZSensibility,2);
+    println("percent of room",skeleton.steeringWheel.positionPercentageOfRoom.z);
+    if(skeleton.steeringWheel.positionPercentageOfRoom.z < -0.6) sphere.cameraTransZ = -sphere.radius/5;
+    else sphere.cameraTransZ = map(skeleton.steeringWheel.positionPercentageOfRoom.z, -1, 1, -sphere.radius/2, -1.5*sphere.radius);//ver porcentagem da sala, diminuir proximidade
+    //sphere.cameraTransZ = pow(sphere.cameraTransZ,2);
     //cameraTransZ é negativo entao quanto aproxima tem q ficar menos negativo
-    
-    if (sphere.cameraTransZ > -(sphere.radius-0.2*sphere.radius)){
+    //println("camera z:", sphere.cameraTransZ);
+    if (sphere.cameraTransZ > -(sphere.radius/2+0.1*sphere.radius)){
       sphere.transZSensibility = 0;
     }
     else if(sphere.cameraTransZ < -(sphere.radius+sphere.radius*0.4)) {
@@ -40,7 +43,8 @@ void draw() {
       //sphere.transZSensibility = map(sphere.cameraTransZ,-1*(sphere.radius/2),-sphere.radius*1.5,0,1);//ver qual é melhor
       sphere.transZSensibility = map(skeleton.steeringWheel.positionPercentageOfRoom.z,-1,1,0,1);
     }
-    
+    println("sensibility: ",sphere.transZSensibility);
+    println("sensibility ^2:",pow(sphere.transZSensibility,2));
     
   }
 }
