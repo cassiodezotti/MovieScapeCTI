@@ -9,7 +9,7 @@ Scene scene = new Scene();
 Sphere sphere;
 
 void setup() {
-  size(500, 500, P3D);
+  size(600, 600, P3D);
   sphere = new Sphere(this, 0.8);
   frameRate(scene.frameRate_);
   scene.init();
@@ -27,7 +27,7 @@ void draw() {
   for(Skeleton skeleton:scene.activeSkeletons.values()){ 
     sphere.cameraRotX = sphere.cameraRotX + (map(skeleton.steeringWheel.position.y, 1, 1.5, PI/64, -PI/64))*pow(sphere.transZSensibility,2);
     sphere.cameraRotY = sphere.cameraRotY + (skeleton.steeringWheel.yawStep)*pow(sphere.transZSensibility,2);
-    println("percent of room",skeleton.steeringWheel.positionPercentageOfRoom.z);
+    
     if(skeleton.steeringWheel.positionPercentageOfRoom.z < -0.6) sphere.cameraTransZ = -sphere.radius/5;
     else sphere.cameraTransZ = map(skeleton.steeringWheel.positionPercentageOfRoom.z, -1, 1, -sphere.radius/2, -1.5*sphere.radius);//ver porcentagem da sala, diminuir proximidade
     //sphere.cameraTransZ = pow(sphere.cameraTransZ,2);
@@ -43,8 +43,7 @@ void draw() {
       //sphere.transZSensibility = map(sphere.cameraTransZ,-1*(sphere.radius/2),-sphere.radius*1.5,0,1);//ver qual é melhor
       sphere.transZSensibility = map(skeleton.steeringWheel.positionPercentageOfRoom.z,-1,1,0,1);
     }
-    println("sensibility: ",sphere.transZSensibility);
-    println("sensibility ^2:",pow(sphere.transZSensibility,2));
+    
     
   }
 }
