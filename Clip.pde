@@ -6,7 +6,7 @@ class Clip {
   private float movieAspectRatio;
   private float movieHeight;
   private float movieWidth;
-  private int nOfDifferentClips = 11;
+  private int nOfDifferentClips = 12;
   private PVector centerDirection; // V1
   private PVector verticalDirection; // V2
   private PVector horizontalDirection; // V3
