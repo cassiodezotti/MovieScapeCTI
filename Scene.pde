@@ -33,7 +33,7 @@ public class Scene{
   public boolean drawRondDuBras = false;
   public boolean drawMomentum = false;
   public boolean drawCenterOfMass = false;
-  public boolean loadFloorCalibration = true;
+  public boolean loadFloorCalibration = false;
   public boolean hasSkeleton = false;
   
   public Scene(){
